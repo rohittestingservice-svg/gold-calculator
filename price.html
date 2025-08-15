@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gold Price Calculator</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background: #f8f9fa;
+    }
+    .card {
+        max-width: 500px;
+        margin: auto;
+        margin-top: 20px;
+        border-radius: 12px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Back Button -->
+    <a href="index.html" class="btn btn-secondary p-2 mt-4">⬅ Back</a>
+
+    <div class="card shadow p-4">
+        <h3 class="text-center mb-4">Gold Price Calculator</h3>
+
+        <div class="mb-3">
+            <label class="form-label">Gold Weight (grams)</label>
+            <input type="number" class="form-control" id="weight" placeholder="Enter weight in grams" oninput="calculateTotal()">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Rate per Gram (₹)</label>
+            <input type="number" class="form-control" id="rate" placeholder="Enter rate per gram" oninput="calculateTotal()">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Making Charges (%)</label>
+            <input type="number" class="form-control" id="making" placeholder="Enter making charges %" oninput="calculateTotal()">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">GST (%)</label>
+            <input type="number" class="form-control" id="gst" placeholder="Enter GST %" oninput="calculateTotal()">
+        </div>
+
+        <h5 class="text-center mt-4">Calculation Result</h5>
+        <ul class="list-group" id="result">
+            <li class="list-group-item">Gold Price: -</li>
+            <li class="list-group-item">Making Charges: -</li>
+            <li class="list-group-item">Subtotal: -</li>
+            <li class="list-group-item">GST Amount: -</li>
+            <li class="list-group-item fw-bold">Total Price: -</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+function calculateTotal() {
+    let weight = parseFloat(document.getElementById('weight').value);
+    let rate = parseFloat(document.getElementById('rate').value);
+    let makingPercent = parseFloat(document.getElementById('making').value);
+    let gstPercent = parseFloat(document.getElementById('gst').value);
+
+    let resultList = document.getElementById('result');
+
+    if (isNaN(weight) || isNaN(rate) || weight <= 0 || rate <= 0) {
+        resultList.innerHTML = `
+            <li class="list-group-item">Gold Price: -</li>
+            <li class="list-group-item">Making Charges: -</li>
+            <li class="list-group-item">Subtotal: -</li>
+            <li class="list-group-item">GST Amount: -</li>
+            <li class="list-group-item fw-bold">Total Price: -</li>
+        `;
+        return;
+    }
+
+    let goldPrice = weight * rate;
+    let makingCharges = (makingPercent > 0 ? (goldPrice * makingPercent) / 100 : 0);
+    let subtotal = goldPrice + makingCharges;
+    let gstAmount = (gstPercent > 0 ? (subtotal * gstPercent) / 100 : 0);
+    let totalPrice = subtotal + gstAmount;
+
+    resultList.innerHTML = `
+        <li class="list-group-item">Gold Price: ₹${goldPrice.toFixed(2)}</li>
+        <li class="list-group-item">Making Charges: ₹${makingCharges.toFixed(2)}</li>
+        <li class="list-group-item">Subtotal: ₹${subtotal.toFixed(2)}</li>
+        <li class="list-group-item">GST Amount: ₹${gstAmount.toFixed(2)}</li>
+        <li class="list-group-item fw-bold">Total Price: ₹${totalPrice.toFixed(2)}</li>
+    `;
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

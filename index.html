@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dynamic Gold Price Calculator</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<style>
+    body {
+        background: #f8f9fa;
+    }
+    .card {
+        max-width: 500px;
+        margin: auto;
+        margin-top: 20px;
+        border-radius: 12px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card shadow p-4">
+        <div class="d-flex">
+            <h3 class="text-center mb-4">Gold Price Calculator</h3>
+        </div>
+
+        <div class="mb-3">
+            <label for="goldPrice" class="form-label">Enter Gold Price</label>
+            <input type="number" class="form-control" id="goldPrice" placeholder="Enter gold price" oninput="calculatePrices()">
+        </div>
+
+        <div class="mb-3">
+            <label for="caratSelect" class="form-label">Select Carat</label>
+            <select class="form-select" id="caratSelect" onchange="calculatePrices()">
+                <option value="24" selected>24K</option>
+                <option value="22">22K</option>
+                <option value="20">20K</option>
+                <option value="18">18K</option>
+            </select>
+        </div>
+
+        <h5 class="text-center">Calculated Prices</h5>
+        <ul class="list-group" id="result">
+            <li class="list-group-item">24K Price: -</li>
+            <li class="list-group-item">22K Price: -</li>
+            <li class="list-group-item">20K Price: -</li>
+            <li class="list-group-item">18K Price: -</li>
+        </ul>
+    </div>
+    <a href="price.html" class="btn btn-secondary p-2 mt-4 text-center w-100">
+        <i class="bi bi-calculator"></i> Calculate Price
+    </a>
+</div>
+
+<script>
+function calculatePrices() {
+    let enteredPrice = parseFloat(document.getElementById('goldPrice').value);
+    let enteredCarat = parseFloat(document.getElementById('caratSelect').value);
+    let resultList = document.getElementById('result');
+
+    if (isNaN(enteredPrice) || enteredPrice <= 0) {
+        resultList.innerHTML = `
+            <li class="list-group-item">24K Price: -</li>
+            <li class="list-group-item">22K Price: -</li>
+            <li class="list-group-item">20K Price: -</li>
+            <li class="list-group-item">18K Price: -</li>
+        `;
+        return;
+    }
+
+    // Convert entered carat price to 24K base price
+    let base24Price = (enteredPrice / enteredCarat) * 24;
+
+    // Calculate other carats
+    let price24 = base24Price;
+    let price22 = (base24Price * 22) / 24;
+    let price20 = (base24Price * 20) / 24;
+    let price18 = (base24Price * 18) / 24;
+
+    resultList.innerHTML = `
+        <li class="list-group-item">24K Price: ${price24.toFixed(2)}</li>
+        <li class="list-group-item">22K Price: ${price22.toFixed(2)}</li>
+        <li class="list-group-item">20K Price: ${price20.toFixed(2)}</li>
+        <li class="list-group-item">18K Price: ${price18.toFixed(2)}</li>
+    `;
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
